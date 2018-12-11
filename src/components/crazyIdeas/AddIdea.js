@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
 import { MDBInput, MDBBtn } from "mdbreact";
 
 class AddIdea extends Component {
@@ -25,9 +24,7 @@ class AddIdea extends Component {
         e.preventDefault()
         let title = this.state.idea.title
         if (title!=null && title!=='') {
-            let ideaId = this.props.addIdea(this.state.idea).id
-            /* ReactDOM.findDOMNode(this.refs[ideaId]).focus(); */
-            console.log(this.refs.ideaCol)
+            this.props.addIdea(this.state.idea)
             this.initializeState()
         }
     }

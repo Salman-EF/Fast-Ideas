@@ -8,12 +8,10 @@ const Ideas = ({ideas, deleteIdea}) => {
           return mlist[dt.getMonth()];
     }
     function changeDateFormat(date) {
-        console.log(ideaCol)
         let year = date.getFullYear(), month = month_name(date), day = date.getDate()<10 ? ('0'+date.getDate()):(date.getDate())
         return day +' '+ month +' '+ year
     }
     
-    let ideaCol = React.createRef();
     const ideasList = ideas.length ? (
         ideas.map(idea => {
             return (
