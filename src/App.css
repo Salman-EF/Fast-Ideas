@@ -66,8 +66,12 @@
   margin-bottom: 0;
 }
 .card-react hr {margin-top: 0;}
+.card-react {transition-duration: 400ms}
+.card-react:hover .card-delete-icon{visibility: visible;}
+.card-react:hover {box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 rgba(0, 0, 0, 0.12);}
 .card-react .card-delete-icon {
   margin: 3px 5px;
   float: right;
   cursor: pointer;
+  visibility: hidden;
 }

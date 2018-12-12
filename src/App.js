@@ -13,7 +13,7 @@ class App extends Component {
     ideas : [
       {id:1, title:"What's all this coding is about?", ideaContent:"I have to forget that coding is a competition and just have fun like I was doing at the beginning", createdAt: new Date('2018,12,06')},
       {id:2, title:"The concept of having personnal website", ideaContent:"My website is my face", createdAt: new Date('2018,12,10')},
-      {id:3, title:"Be Humble", ideaContent:"Sit down...be humble!!", createdAt: new Date('2018,12,08')},
+      {id:3, title:"Be Humble", ideaContent:"Sit down...be humble!!", createdAt: new Date('2018,12,11')},
     ]
   };
   addIdea = (idea) => {

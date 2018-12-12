@@ -37,7 +37,7 @@ class AddIdea extends Component {
     
     render() {
         return (
-            <div className="col-md-8 mx-auto my-5 py-3">
+            <div id="newIdeaSection" className="col-md-8 mx-auto my-5 py-3">
                 <form onSubmit={this.submitHandler}>
                 <div className="md-form">
                     <MDBInput id="title" hint="Idea title" className="text-center"
