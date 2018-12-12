@@ -17,8 +17,11 @@ const Ideas = ({ideas, deleteIdea}) => {
             return (
                 <MDBCol md="4" className="my-2" key={idea.id}>
                     <MDBCard className="card-react">
+                        <div className="card-header-delete" >
+                            <Ionicon icon="md-close" className="card-delete-icon" onClick={() => deleteIdea(idea.id)} />
+                        </div>
                         <MDBCardHeader>
-                            <h3 className="my-3">{idea.title}</h3>
+                            <h4>{idea.title}</h4>
                         </MDBCardHeader>
                         <MDBCardBody>
                         <p className="card-date">{changeDateFormat(idea.createdAt)}</p>

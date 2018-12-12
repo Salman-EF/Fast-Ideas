@@ -52,14 +52,12 @@
   border-bottom: 1px solid #5ED4F3 !important;
 }
 .text-react {color:#5ed4f3}
-.card-react {
-  cursor: pointer;
-}
-.card-react .card-header {
+.card-react .card-header, .card-react .card-footer {
   background-color: #ffffff;
   color:#5ed4f3;
   border: 0;
 }
+.card-react .card-footer {padding-top: 0%}
 .card-react .card-body {
   background-color: #F7F7F7;
 }
@@ -68,3 +66,8 @@
   margin-bottom: 0;
 }
 .card-react hr {margin-top: 0;}
+.card-react .card-delete-icon {
+  margin: 3px 5px;
+  float: right;
+  cursor: pointer;
+}
