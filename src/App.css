@@ -64,6 +64,7 @@
 .card-react .card-date {
   color: #6D6D83;
   margin-bottom: 0;
+  font-size: 0.9rem;
 }
 .card-react hr {margin-top: 0;}
 .card-react {transition-duration: 400ms}

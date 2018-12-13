@@ -1,29 +1,24 @@
 import React from "react";
+import Moment from "moment"
 import {MDBContainer,MDBCard,MDBCardBody,MDBRow,MDBCol,MDBCardHeader} from "mdbreact";
 import Ionicon from 'react-ionicons'
 
 const Ideas = ({ideas, deleteIdea}) => {
-    function month_name(dt) {
-        let mlist = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-          return mlist[dt.getMonth()];
-    }
-    function day_name(dt) {
-        let dlist = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
-          return dlist[dt.getDay()];
-    }
-    function isYesterday(dt) {
-        var today = new Date()
-        today.setHours(0,0,0,0)
-        dt.setHours(0,0,0,0)
-        return (today.getTime() - 864e5) === dt.getTime()
-    }
     function changeDateFormat(date) {
-        let year = date.getFullYear(), month = month_name(date).substr(0,3), day = date.getDate()<10 ? ('0'+date.getDate()):(date.getDate()),
-            dayName = day_name(date), hour = date.getHours()
-            console.log(hour)
-        var dateFormat
-        isYesterday(date) ? ( dateFormat = 'Yesterday, '+ dayName +' '+ month +' '+ day +' '+ year ) 
-                    : ( dateFormat = dayName +' '+ month +' '+ day +' '+ year )
+        let givenMoment = Moment(date),
+            dateFormat = givenMoment.format('MMMM DD, YYYY') +' at '+givenMoment.format('hh:mm A')
+        if(Moment().year()===givenMoment.year()) {
+            dateFormat = givenMoment.format('MMMM DD') +' at '+givenMoment.format('hh:mm A')
+        }
+        if(Moment().diff(givenMoment, 'days') <= 1) {
+            dateFormat = givenMoment.calendar(Moment())
+        }
+        if(Moment().diff(givenMoment, 'hours') <= 2) {
+            if(givenMoment.fromNow(true).includes('second'))dateFormat=givenMoment.fromNow(true).replace('second','sec')
+            if(givenMoment.fromNow(true).includes('minute'))dateFormat=givenMoment.fromNow(true).replace('minute','min')
+            if(givenMoment.fromNow(true).includes('hour'))dateFormat=givenMoment.fromNow(true)
+            dateFormat = dateFormat.replace('a ','')
+        }
         return dateFormat
     }
     
