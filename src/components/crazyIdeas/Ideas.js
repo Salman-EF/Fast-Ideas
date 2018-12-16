@@ -25,7 +25,7 @@ const Ideas = ({ideas, deleteIdea}) => {
     const ideasList = ideas.length ? (
         ideas.map(idea => {
             return (
-                <MDBCol md="4" className="my-2" key={idea.id}>
+                <MDBCol md="4" className="my-2" key={idea.id.counter}>
                     <MDBCard className="card-react">
                         <div className="card-header-delete" >
                             <Ionicon icon="md-close" className="card-delete-icon" onClick={() => deleteIdea(idea.id)} />
@@ -34,10 +34,10 @@ const Ideas = ({ideas, deleteIdea}) => {
                             <h4>{idea.title}</h4>
                         </MDBCardHeader>
                         <MDBCardBody>
-                        <p className="card-date">{changeDateFormat(idea.createdAt)}</p>
+                        <p className="card-date">{changeDateFormat(idea.created_at)}</p>
                         <hr/>
                         <p>
-                            {idea.ideaContent}
+                            {idea.content}
                         </p>
                         </MDBCardBody>
                     </MDBCard>
