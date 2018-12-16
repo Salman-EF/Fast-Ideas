@@ -10,12 +10,17 @@ import AddIdea from './components/crazyIdeas/AddIdea';
 
 class App extends Component {
   state = {
-    ideas : [
-      {id:1, title:"What's all this coding is about?", ideaContent:"I have to forget that coding is a competition and just have fun like I was doing at the beginning", createdAt: new Date('2018,12,10')},
-      {id:2, title:"The concept of having personnal website", ideaContent:"My website is my face", createdAt: new Date('2018,12,12')},
-      {id:3, title:"Be Humble", ideaContent:"Sit down...be humble!!", createdAt: new Date('2018,12,11')},
-    ]
+    ideas : [],
+    isLoading : false
   };
+  componentDidMount() {
+    this.setState({isLoading: true});
+  
+    fetch('http://localhost:8080/ideas')
+      .then(response => response.json())
+      .then(data => this.setState({ideas: data, isLoading: false}));
+  }
+
   addIdea = (idea) => {
     idea.id = Math.random();
     idea.createdAt = new Date();
@@ -41,10 +46,17 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
         </header>
         <main className="App-main">
-          <div className="container mt-3 mb-5">
-            <AddIdea addIdea={this.addIdea} />
-            <Ideas ideas={this.state.ideas} deleteIdea={this.deleteIdea} />
-          </div>
+            <div className="container mt-3 mb-5">
+              <AddIdea addIdea={this.addIdea} />
+              {/* Print Loading... till data fetched */}
+              {this.state.isLoading ? (
+                <div className="container">
+                    <h3>Loading...</h3>
+                </div>
+              ) : (
+                <Ideas ideas={this.state.ideas} deleteIdea={this.deleteIdea} />
+              )}
+            </div>
         </main>
       </div>
     );
