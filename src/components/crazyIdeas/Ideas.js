@@ -1,10 +1,24 @@
-import React from "react";
+import React,{ Component } from "react";
 import Moment from "moment"
 import {MDBContainer,MDBCard,MDBCardBody,MDBRow,MDBCol,MDBCardHeader} from "mdbreact";
 import Ionicon from 'react-ionicons'
+import UpdateIdea from './UpdateIdea';
 
-const Ideas = ({ideas, updateIdeas}) => {
-    function changeDateFormat(date) {
+class Ideas extends Component {
+    
+    state = {
+        ideas: this.props.ideas
+    };
+    componentDidUpdate(prevProps){
+        // compare props to not cause an infinite loop:
+        if (this.props.ideas !== prevProps.ideas) {
+            this.setState({
+                ideas: this.props.ideas
+            })
+        }
+    }
+
+    changeDateFormat(date) {
         let givenMoment = Moment(date),
             dateFormat = givenMoment.format('MMMM DD, YYYY') +' at '+givenMoment.format('hh:mm A')
         if(Moment().year()===givenMoment.year()) {
@@ -21,55 +35,62 @@ const Ideas = ({ideas, updateIdeas}) => {
         }
         return dateFormat
     }
-    function deleteIdea(id) {
+    deleteIdea(id) {
         fetch("http://localhost:8080/ideas/"+id, {
             method: "DELETE"
         }).then(response => response.json())
-        .then( function(data) {
+        .then( data => {
             if(data) {
-                let listUpdated = ideas.filter(idea => {
+                let listUpdated = this.state.ideas.filter(idea => {
                     return idea.id !== id
                 })
-                updateIdeas(listUpdated)
+                this.props.updateIdeas(listUpdated)
             }
         })
     }
-    
-    const ideasList = ideas.length ? (
-        ideas.map(idea => {
-            return (
-                <MDBCol md="4" className="my-2" key={idea.id}>
-                    <MDBCard className="card-react">
-                        <div className="card-header-delete" >
-                            <Ionicon icon="md-close" className="card-delete-icon" onClick={() => deleteIdea(idea.id)} />
-                        </div>
-                        <MDBCardHeader>
-                            <h4>{idea.title}</h4>
-                        </MDBCardHeader>
-                        <MDBCardBody>
-                        <p className="card-date">{changeDateFormat(idea.created_at)}</p>
-                        <hr/>
-                        <p>
-                            {idea.content}
-                        </p>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-            )
-        })
-    ) : (
-        <div className="row py-3">
-            <h3>You better Write something</h3>
-        </div>
-    )
+    updateModal(idea) {
+        
+    }
 
-    return (
-        <MDBContainer id="displayIdeasSection">
-            <MDBRow className="justify-content-center">
-                {ideasList}
-            </MDBRow>
-        </MDBContainer>
-    )
+    render() {
+        return (
+            <MDBContainer id="displayIdeasSection">
+                <MDBRow className="justify-content-center">
+                    {
+                    this.state.ideas.length ? (
+                        this.state.ideas.map(idea => {
+                            return (
+                                <MDBCol md="4" className="my-2" key={idea.id}>
+                                    <MDBCard className="card-react" onClick={this.updateModal(idea)} >
+                                        <div className="card-header-icons" >
+                                            <Ionicon icon="md-close" className="card-icons card-delete-icon card-icons-onhover"
+                                                        onClick={() => this.deleteIdea(idea.id)} />
+                                        </div>
+                                        <MDBCardHeader>
+                                            <h4>{idea.title}</h4>
+                                        </MDBCardHeader>
+                                        <MDBCardBody>
+                                        <p className="card-date">{this.changeDateFormat(idea.created_at)}</p>
+                                        <hr/>
+                                        <p>
+                                            {idea.content}
+                                        </p>
+                                        </MDBCardBody>
+                                        {/* <UpdateIdea isOpen={true} idea={idea} /> */}
+                                    </MDBCard>
+                                </MDBCol>
+                            )
+                            })
+                            ) : (
+                                <MDBRow className="py-3">
+                                    <h3>You better Write something</h3>
+                                </MDBRow>
+                            )
+                    }
+                </MDBRow>
+            </MDBContainer>
+        )
+    }
 }
 
 export default Ideas
