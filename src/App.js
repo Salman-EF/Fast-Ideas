@@ -20,16 +20,6 @@ class App extends Component {
       .then(response => response.json())
       .then(data => this.setState({ideas: data, isLoading: false}));
   }
-
-  addIdea = (idea) => {
-    idea.id = Math.random();
-    idea.createdAt = new Date();
-    let ideas = [...this.state.ideas, idea];
-    this.setState({
-      ideas
-    });
-    return idea
-  }
   deleteIdea = (id) => {
     let ideas = this.state.ideas.filter(idea => {
       return idea.id !== id
@@ -37,6 +27,9 @@ class App extends Component {
     this.setState({
       ideas
     })
+  }
+  updateIdeas = (ideasList) => {
+    this.setState({ideas: ideasList})
   }
 
   render() {
@@ -47,7 +40,7 @@ class App extends Component {
         </header>
         <main className="App-main">
             <div className="container mt-3 mb-5">
-              <AddIdea addIdea={this.addIdea} />
+              <AddIdea ideas={this.state.ideas} updateIdeas={this.updateIdeas} />
               {/* Print Loading... till data fetched */}
               {this.state.isLoading ? (
                 <div className="container">

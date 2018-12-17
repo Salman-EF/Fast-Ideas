@@ -6,15 +6,18 @@ class AddIdea extends Component {
         idea: {
             id: null,
             title: '',
-            ideaContent: '',
-            createdAt: null
+            content: '',
+            created_at: null,
+            thinker: {
+                id: null
+            }
         },
         active: 'disabled'
     }
     changeHandler = (e) => {
         let target = e.target
         if (target.id==='title' && target.value!=null && target.value!=='') {this.setState({ active: '' })}
-        else if(target.id==='ideaContent') {} else {this.setState({ active: 'disabled' })}
+        else if(target.id==='content') {} else {this.setState({ active: 'disabled' })}
 
         let idea = {...this.state.idea}
         idea[target.id] = target.value
@@ -24,13 +27,26 @@ class AddIdea extends Component {
         e.preventDefault()
         let title = this.state.idea.title
         if (title!=null && title!=='') {
-            this.props.addIdea(this.state.idea)
+            this.addIdea(this.state.idea)
             this.initializeState()
         }
     }
+    addIdea = (idea) => {
+      idea.created_at = new Date();
+      fetch('http://localhost:8080/ideas',{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(idea)
+      }).then(response => response.json())
+        .then( data => idea = data,
+          console.log(idea),
+          this.props.updateIdeas([...this.props.ideas, idea])
+        )
+      return idea
+    }
     initializeState = () => {
         this.setState({
-            idea: { id: null,title: '',ideaContent: '',createdAt: null },
+            idea: { id: null,title: '',content: '',created_at: null },
             active: 'disabled'
         })
     }
@@ -42,8 +58,8 @@ class AddIdea extends Component {
                 <div className="md-form">
                     <MDBInput id="title" hint="Idea title" className="text-center"
                             onChange={this.changeHandler} value={this.state.idea.title} />
-                    <MDBInput id="ideaContent" type="textarea" rows="5" hint="So What's your Crazy Idea..." className="mb-0"
-                            onChange={this.changeHandler} value={this.state.idea.ideaContent} />
+                    <MDBInput id="content" type="textarea" rows="5" hint="So What's your Crazy Idea..." className="mb-0"
+                            onChange={this.changeHandler} value={this.state.idea.content} />
                     <MDBBtn rounded outline color="save" type="submit" className={this.state.active} >
                         <span className="font-weight-bold">Save</span>
                     </MDBBtn>
