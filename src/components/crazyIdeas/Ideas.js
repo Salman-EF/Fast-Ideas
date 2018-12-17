@@ -22,13 +22,11 @@ const Ideas = ({ideas, updateIdeas}) => {
         return dateFormat
     }
     function deleteIdea(id) {
-        let deletingStatus = false
         fetch("http://localhost:8080/ideas/"+id, {
             method: "DELETE"
         }).then(response => response.json())
         .then( function(data) {
-            deletingStatus = data
-            if(deletingStatus) {
+            if(data) {
                 let listUpdated = ideas.filter(idea => {
                     return idea.id !== id
                 })
