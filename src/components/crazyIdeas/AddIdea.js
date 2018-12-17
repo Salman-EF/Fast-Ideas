@@ -38,10 +38,8 @@ class AddIdea extends Component {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(idea)
       }).then(response => response.json())
-        .then( data => idea = data,
-          console.log(idea),
-          this.props.updateIdeas([...this.props.ideas, idea])
-        )
+        .then( data => this.props.updateIdeas([...this.props.ideas, data]))
+        
       return idea
     }
     initializeState = () => {
