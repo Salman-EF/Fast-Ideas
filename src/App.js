@@ -20,14 +20,6 @@ class App extends Component {
       .then(response => response.json())
       .then(data => this.setState({ideas: data, isLoading: false}));
   }
-  deleteIdea = (id) => {
-    let ideas = this.state.ideas.filter(idea => {
-      return idea.id !== id
-    })
-    this.setState({
-      ideas
-    })
-  }
   updateIdeas = (ideasList) => {
     this.setState({ideas: ideasList})
   }
@@ -47,7 +39,7 @@ class App extends Component {
                     <h3>Loading...</h3>
                 </div>
               ) : (
-                <Ideas ideas={this.state.ideas} deleteIdea={this.deleteIdea} />
+                <Ideas ideas={this.state.ideas} updateIdeas={this.updateIdeas} />
               )}
             </div>
         </main>
