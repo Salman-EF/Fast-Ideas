@@ -28,16 +28,11 @@
   padding: 2rem;
   margin-bottom: 2rem;
 }
-.App-main {
-  min-height: 50%;
-}
+.App-main {min-height: 50%;}
 
-.App-link {
-  color: #61dafb;
-}
-.Ionicon {
-  cursor: pointer;
-}
+.App-link {color: #61dafb;}
+.icon-pointer {cursor: pointer;}
+.btn.disabled, .btn:disabled, .icon-hoverable{opacity:0.5!important;}.icon-hoverable:hover{opacity:1!important;}
 .btn-rounded {
   border-radius: 10em !important;
   border: 2px solid !important;
@@ -78,3 +73,6 @@
 }
 .card-react .card-header-icons .card-delete-icon {float: right;}
 .card-react .card-header-icons .card-update-icon {float: left;}
+#updateModal .modal-header .modal-title {width: 100% !important;}
+#updateModal .modal-header .modal-title .icon-pointer {float: right;}
+#updateModal .modal-body {min-height: 55vh !important}

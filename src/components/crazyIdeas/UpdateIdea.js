@@ -1,9 +1,12 @@
 import  React, { Component } from 'react';
-import { Container, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
+import { Container, Button, Modal, ModalBody, ModalHeader, ModalFooter, MDBInput } from 'mdbreact';
+import Ionicon from 'react-ionicons'
+import '../../static/modal-script';
 
 class UpdateIdea extends Component {
     state = {
         idea: this.props.idea,
+        formState: false
     }
     componentDidUpdate(prevProps){
         if(this.props.idea !== prevProps.idea) {
@@ -12,19 +15,31 @@ class UpdateIdea extends Component {
             })
         }
     }
+    toggle = () => {
+        this.props.toggle()
+        this.setState({formState:false})
+    }
 
     render() {
         return (
             <Container>
-                <Modal isOpen={this.props.isOpen} toggle={() => this.props.toggle()} centered>
-                    <ModalHeader toggle={() => this.props.toggle()}>{this.state.idea.title}</ModalHeader>
+                <Modal id="updateModal" isOpen={this.props.isOpen} toggle={() => this.toggle()} centered>
+                    { !this.state.formState ? (
+                    <div>
+                    <ModalHeader toggle={() => this.props.toggle()}>
+                        {this.state.idea.title}
+                        <Ionicon icon="md-create" color="#5ed4f3" className="icon-pointer icon-hoverable" onClick={() => this.setState({formState:true})} />
+                    </ModalHeader>
                     <ModalBody>
                         {this.state.idea.content}
                     </ModalBody>
-                    <ModalFooter>
-                        <Button color="secondary" onClick={() => this.props.toggle()}>Close</Button>
-                        <Button color="primary">Save changes</Button>
-                    </ModalFooter>
+                    </div>
+                    ) : (
+                    <form onSubmit={this.submitHandler}>
+                    <Button onClick={() => this.setState({formState:false})}>Cancel</Button>
+                    </form>
+                    )
+                    }
                 </Modal>
             </Container>
         )
