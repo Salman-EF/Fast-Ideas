@@ -1,0 +1,80 @@
+.App {
+  height: 100vh;
+  overflow: auto;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 20vmin;
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.App-main {
+  min-height: 50%;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.Ionicon {
+  cursor: pointer;
+}
+.btn-rounded {
+  border-radius: 10em !important;
+  border: 2px solid !important;
+  background-color: transparent!important
+}
+.btn-outline-save {
+  background-color: transparent !important;
+  color: #5ED4F3 !important;
+}
+.md-form input:focus:not([readonly]),
+.md-form textarea.md-textarea:focus:not([readonly]) {
+  box-shadow: 0 1px 0 0 #5ED4F3 !important;
+  border-bottom: 1px solid #5ED4F3 !important;
+}
+.text-react {color:#5ed4f3}
+.card-react {cursor: pointer;}
+.card-react .card-header, .card-react .card-footer {
+  background-color: #ffffff;
+  color:#5ed4f3;
+  border: 0;
+}
+.card-react .card-footer {padding-top: 0%}
+.card-react .card-body {
+  background-color: #F7F7F7;
+}
+.card-react .card-date {
+  color: #6D6D83;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+.card-react hr {margin-top: 0;}
+.card-react {transition-duration: 400ms}
+.card-react:hover .card-icons-onhover{visibility: visible;}
+.card-react:hover {box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 rgba(0, 0, 0, 0.12);}
+.card-react .card-icons {
+  margin: 3px 5px;
+  visibility: hidden;
+}
+.card-react .card-header-icons .card-delete-icon {float: right;}
+.card-react .card-header-icons .card-update-icon {float: left;}
