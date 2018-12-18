@@ -7,9 +7,17 @@ import UpdateIdea from './UpdateIdea';
 class Ideas extends Component {
     
     state = {
-        ideas: this.props.ideas
+        ideas: this.props.ideas,
+        ModalOpen: false,
+        ideaToUpdate: {
+            id: null,
+            title: '',
+            content: '',
+            created_at: null,
+            thinker: { id: null }
+        }
     };
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps) {
         // compare props to not cause an infinite loop:
         if (this.props.ideas !== prevProps.ideas) {
             this.setState({
@@ -48,45 +56,59 @@ class Ideas extends Component {
             }
         })
     }
-    updateModal(idea) {
-        
+    showUpdateModal = (idea) => {
+        this.setState({
+            ideaToUpdate: {
+                id: idea.id,
+                title: idea.title,
+                content: idea.content,
+                created_at: idea.created_at,
+                thinker: { id: idea.thinker.id }
+            },
+            ModalOpen: true
+        })
+    }
+    toggleUpdateModal = () => {
+        this.setState({
+            ModalOpen: false
+        })
     }
 
     render() {
         return (
             <MDBContainer id="displayIdeasSection">
                 <MDBRow className="justify-content-center">
-                    {
-                    this.state.ideas.length ? (
-                        this.state.ideas.map(idea => {
-                            return (
-                                <MDBCol md="4" className="my-2" key={idea.id}>
-                                    <MDBCard className="card-react" onClick={this.updateModal(idea)} >
-                                        <div className="card-header-icons" >
-                                            <Ionicon icon="md-close" className="card-icons card-delete-icon card-icons-onhover"
-                                                        onClick={() => this.deleteIdea(idea.id)} />
-                                        </div>
-                                        <MDBCardHeader>
-                                            <h4>{idea.title}</h4>
-                                        </MDBCardHeader>
-                                        <MDBCardBody>
-                                        <p className="card-date">{this.changeDateFormat(idea.created_at)}</p>
-                                        <hr/>
-                                        <p>
-                                            {idea.content}
-                                        </p>
-                                        </MDBCardBody>
-                                        {/* <UpdateIdea isOpen={true} idea={idea} /> */}
-                                    </MDBCard>
-                                </MDBCol>
-                            )
-                            })
-                            ) : (
-                                <MDBRow className="py-3">
-                                    <h3>You better Write something</h3>
-                                </MDBRow>
-                            )
-                    }
+                {
+                this.state.ideas.length ? (
+                    this.state.ideas.map(idea => {
+                        return (
+                            <MDBCol md="4" className="my-2" key={idea.id}>
+                            <MDBCard className="card-react" onClick={() => this.showUpdateModal(idea)} >
+                                <div className="card-header-icons" >
+                                    <Ionicon icon="md-close" className="card-icons card-delete-icon card-icons-onhover"
+                                                onClick={() => this.deleteIdea(idea.id)} />
+                                </div>
+                                <MDBCardHeader>
+                                    <h4>{idea.title}</h4>
+                                </MDBCardHeader>
+                                <MDBCardBody>
+                                <p className="card-date">{this.changeDateFormat(idea.created_at)}</p>
+                                <hr/>
+                                <p>
+                                    {idea.content}
+                                </p>
+                                </MDBCardBody>
+                            </MDBCard>
+                            </MDBCol>
+                        )
+                        })
+                        ) : (
+                            <MDBRow className="py-3">
+                                <h3>You better Write something</h3>
+                            </MDBRow>
+                        )
+                }
+                <UpdateIdea isOpen={this.state.ModalOpen} idea={this.state.ideaToUpdate} toggle={this.toggleUpdateModal} />
                 </MDBRow>
             </MDBContainer>
         )
