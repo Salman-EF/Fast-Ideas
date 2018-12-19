@@ -5,6 +5,7 @@ import '../../static/modal-script';
 
 class UpdateIdea extends Component {
     state = {
+        oldIdea:  this.props.idea,
         idea: this.props.idea,
         formState: false,
         ideaChanged: 'disabled'
@@ -12,6 +13,7 @@ class UpdateIdea extends Component {
     componentDidUpdate(prevProps){
         if(this.props.idea !== prevProps.idea) {
             this.setState({
+                oldIdea: this.props.idea,
                 idea: this.props.idea
             })
         }
@@ -22,29 +24,46 @@ class UpdateIdea extends Component {
     }
     changeHandler = (e) => {
         let target = e.target
-        if (target.id==='title' && target.value!=null && target.value!=='') {
+        if ((target.id==='title' && target.value!=null && target.value!=='') || target.id==='content') {
             this.setState({ ideaChanged: '' })
-        } else if(target.id==='content') {} 
-        else {this.setState({ ideaChanged: 'disabled' })}
+        } else {this.setState({ ideaChanged: 'disabled' })}
 
         let idea = {...this.state.idea}
         idea[target.id] = target.value
         this.setState({idea})
     }
+    cancelHandler = () => {
+        this.setState({
+            idea: this.state.oldIdea,
+            formState:false,
+            ideaChanged: 'disabled'
+        })
+    }
     submitHandler = (e) => {
         e.preventDefault()
-        console.log("Submit: "+this.state.idea.id)
-        /* let ideaChanged = this.state.ideaChanged
+        let ideaChanged = this.state.ideaChanged, idea = this.state.idea, origin = this
         if (ideaChanged==='') {
-            this.addIdea(this.state.idea)
-            this.initializeState()
-        } */
+            fetch('http://localhost:8080/ideas/'+idea.id,{
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(idea)
+            }).then(response => response.json())
+            .then(function(data){
+                if (data!=='' && data!==null) {
+                    origin.setState({
+                        formState: false,
+                        ideaChanged: 'disabled',
+                        oldIdea: origin.state.idea,
+                    })
+                }
+            })
+        }
     }
 
     render() {
         return (
             <Container>
-                <Modal id="updateModal" isOpen={this.props.isOpen} toggle={() => this.toggle()} centered>
+                <Modal id="updateModal" isOpen={this.props.isOpen} toggle={() => null} centered>
                     { !this.state.formState ? (
                     <div>
                     <ModalHeader toggle={() => this.props.toggle()}>
@@ -64,7 +83,7 @@ class UpdateIdea extends Component {
                                     onChange={this.changeHandler} value={this.state.idea.content} />
                         </div>
                         <ModalFooter>
-                            <Button color="#FFF" className="btn-link" onClick={() => this.setState({formState:false})}>Cancel</Button>
+                            <Button color="#FFF" className="btn-link" onClick={this.cancelHandler}>Cancel</Button>
                             <Button rounded outline color="save" type="submit" className={this.state.ideaChanged} >
                                 <span className="font-weight-bold">Save</span>
                             </Button>

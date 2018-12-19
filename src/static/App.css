@@ -84,3 +84,4 @@
 #updateModal .modal-header .modal-title {width: 100% !important;}
 #updateModal .modal-header .modal-title .icon-pointer {float: right;}
 #updateModal .modal-body {min-height: 55vh !important}
+#updateModal .modal-footer {border: none !important;}
