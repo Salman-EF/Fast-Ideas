@@ -17,6 +17,7 @@ class Ideas extends Component {
             this.setState({
                 ideas: this.props.ideas
             })
+            this.toggleUpdateModal()
         }
     }
 
@@ -96,7 +97,8 @@ class Ideas extends Component {
                             </MDBRow>
                         )
                 }
-                <UpdateIdea isOpen={this.state.ModalOpen} idea={this.state.ideaToUpdate} toggle={this.toggleUpdateModal} ideas={this.state.ideas}  refreshIdeas={this.props.refreshIdeas} />
+                <UpdateIdea isOpen={this.state.ModalOpen} toggle={this.toggleUpdateModal}
+                            idea={this.state.ideaToUpdate} ideas={this.state.ideas} refreshIdeas={this.props.refreshIdeas} />
                 </MDBRow>
             </MDBContainer>
         )
