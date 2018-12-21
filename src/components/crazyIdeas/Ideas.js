@@ -9,13 +9,7 @@ class Ideas extends Component {
     state = {
         ideas: this.props.ideas,
         ModalOpen: false,
-        ideaToUpdate: {
-            id: null,
-            title: '',
-            content: '',
-            created_at: null,
-            thinker: { id: null }
-        }
+        ideaToUpdate: {}
     };
     componentDidUpdate(prevProps) {
         // compare props to not cause an infinite loop:
@@ -52,19 +46,13 @@ class Ideas extends Component {
                 let listUpdated = this.state.ideas.filter(idea => {
                     return idea.id !== id
                 })
-                this.props.updateIdeas(listUpdated)
+                this.props.refreshIdeas(listUpdated)
             }
         })
     }
     showUpdateModal = (idea) => {
         this.setState({
-            ideaToUpdate: {
-                id: idea.id,
-                title: idea.title,
-                content: idea.content,
-                created_at: idea.created_at,
-                thinker: { id: idea.thinker.id }
-            },
+            ideaToUpdate: {...idea},
             ModalOpen: true
         })
     }
@@ -108,7 +96,7 @@ class Ideas extends Component {
                             </MDBRow>
                         )
                 }
-                <UpdateIdea isOpen={this.state.ModalOpen} idea={this.state.ideaToUpdate} toggle={this.toggleUpdateModal} />
+                <UpdateIdea isOpen={this.state.ModalOpen} idea={this.state.ideaToUpdate} toggle={this.toggleUpdateModal} ideas={this.state.ideas}  refreshIdeas={this.props.refreshIdeas} />
                 </MDBRow>
             </MDBContainer>
         )

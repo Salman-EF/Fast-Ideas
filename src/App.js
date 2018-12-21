@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './static/App.css';
+import './App.css';
 // import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css'; 
 import 'mdbreact/dist/css/mdb.css';
@@ -13,15 +13,15 @@ class App extends Component {
     ideas : [],
     isLoading : false
   };
-  componentDidMount() {
+  componentDidMount = () => {
     this.setState({isLoading: true});
   
     fetch('http://localhost:8080/ideas')
       .then(response => response.json())
       .then(data => this.setState({ideas: data, isLoading: false}));
   }
-  updateIdeas = (ideasList) => {
-    this.setState({ideas: ideasList})
+  refreshIdeas = (ideas) => {
+    this.setState({ideas})
   }
 
   render() {
@@ -32,14 +32,14 @@ class App extends Component {
         </header>
         <main className="App-main">
             <div className="container mt-3 mb-5">
-              <AddIdea ideas={this.state.ideas} updateIdeas={this.updateIdeas} />
+              <AddIdea ideas={this.state.ideas} refreshIdeas={this.refreshIdeas} />
               {/* Print Loading... till data fetched */}
               {this.state.isLoading ? (
                 <div className="container">
                     <h3>Loading...</h3>
                 </div>
               ) : (
-                <Ideas ideas={this.state.ideas} updateIdeas={this.updateIdeas} />
+                <Ideas ideas={this.state.ideas} refreshIdeas={this.refreshIdeas} />
               )}
             </div>
         </main>

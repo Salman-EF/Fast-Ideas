@@ -38,7 +38,7 @@ class AddIdea extends Component {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(idea)
       }).then(response => response.json())
-        .then( data => this.props.updateIdeas([...this.props.ideas, data]))
+        .then(data =>  this.props.refreshIdeas([...this.props.ideas, data]))
         
       return idea
     }

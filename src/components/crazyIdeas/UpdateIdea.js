@@ -1,12 +1,13 @@
 import  React, { Component } from 'react';
 import { Container, Button, Modal, ModalBody, ModalHeader, ModalFooter, MDBInput } from 'mdbreact';
 import Ionicon from 'react-ionicons'
-import '../../static/modal-script';
+import '../../modal-script';
 
 class UpdateIdea extends Component {
     state = {
         oldIdea:  this.props.idea,
         idea: this.props.idea,
+        ideas: this.props.ideas,
         formState: false,
         ideaChanged: 'disabled'
     }
@@ -14,7 +15,8 @@ class UpdateIdea extends Component {
         if(this.props.idea !== prevProps.idea) {
             this.setState({
                 oldIdea: this.props.idea,
-                idea: this.props.idea
+                idea: this.props.idea,
+                ideas: this.props.ideas
             })
         }
     }
@@ -41,20 +43,25 @@ class UpdateIdea extends Component {
     }
     submitHandler = (e) => {
         e.preventDefault()
-        let ideaChanged = this.state.ideaChanged, idea = this.state.idea, origin = this
+        let ideaChanged = this.state.ideaChanged, ideaUpdated = this.state.idea, origin = this
         if (ideaChanged==='') {
-            fetch('http://localhost:8080/ideas/'+idea.id,{
+            fetch('http://localhost:8080/ideas/'+ideaUpdated.id,{
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(idea)
+                body: JSON.stringify(ideaUpdated)
             }).then(response => response.json())
             .then(function(data){
                 if (data!=='' && data!==null) {
                     origin.setState({
                         formState: false,
                         ideaChanged: 'disabled',
-                        oldIdea: origin.state.idea,
+                        oldIdea: ideaUpdated,
                     })
+                    let listUpdated = origin.state.ideas.map(idea => {
+                        if(idea.id===ideaUpdated.id) return ideaUpdated
+                        return idea
+                    })
+                    origin.props.refreshIdeas(listUpdated)
                 }
             })
         }
