@@ -50,12 +50,16 @@
   background-color: transparent !important;
   color: #5ED4F3 !important;
 }
+.btn-react {
+  background-color: #5ED4F3 !important;
+  color: #FFF !important;
+}
 .md-form input:focus:not([readonly]),
 .md-form textarea.md-textarea:focus:not([readonly]) {
   box-shadow: 0 1px 0 0 #5ED4F3 !important;
   border-bottom: 1px solid #5ED4F3 !important;
 }
-.text-react {color:#5ed4f3}
+.text-react {color:#5ed4f3 !important}
 .card-react {cursor: pointer;}
 .card-react .card-header, .card-react .card-footer {
   background-color: #ffffff;
