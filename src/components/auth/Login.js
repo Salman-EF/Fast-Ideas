@@ -10,7 +10,7 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
-    invalidEmail: ''
+    loginFailed: ''
   }
 
   changeHandler = (e) => {
@@ -24,35 +24,43 @@ class Login extends Component {
   }
   submitHandler = (e) => {
       e.preventDefault()
-      console.log('Email: '+this.state.email)
-      console.log('Pass: '+this.state.password)
-      this.validateEmail(this.state.email)? (
-        // fetch: post login
-        console.log('Email valid: '+this.state.email)
-      ) : (
-        // fetch: post login
-        console.log('Email not valid: '+this.state.email)
-      )
+      let email = this.state.email, password = this.state.password
+      if(this.validateEmail(email) && password) {
+        var thinker = {email:email,password:password}
+        fetch("http://localhost:8080/login",{
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(thinker)
+        }).then(response => response.text())
+          .then(data => {
+            if(data) {
+              localStorage.setItem('ACCESS_TOKEN', data)
+              this.props.loginHandler()
+              this.setState({ loginFailed : '' });
+            } else {
+              this.setState({ loginFailed : 'Your Email or Password is incorrect. Please try again!' });
+            }
+        })
+      }
   }
   render() {
     return (
       <div className="row justify-content-center m-0">
           <div className="col-md-4">
             <form className="text-center p-5" method="post" action="#" onSubmit={this.submitHandler}>
-              <p className="h2 mb-5 text-react text-center">Login</p>
-            
-              <div className="row mt-5">
+              <div className="row">
                 <div className="col-12">
                   {/* Email */}
                   <div className="md-form mb-5">
-                    <MDBInput id="email" name="email" hint="Your Email" className={this.state.invalidEmail +' pl-3'} 
+                    <MDBInput id="email" name="email" hint="Your Email" className={this.state.invalidEmail +' text-center'} 
                               onChange={this.changeHandler} value={this.state.email} />
                   </div>
                   {/* Pass */}
                   <div className="md-form mb-5">
-                    <MDBInput id="password" name="password" type="password" hint="Password" className="pl-3"
+                    <MDBInput id="password" name="password" type="password" hint="Password" className="text-center"
                               onChange={this.changeHandler} value={this.state.password} />
                   </div>
+                  <p className="red-text text-center">{this.state.loginFailed}</p>
                   <div className="form-group row justify-content-center">
                       <div className="col-md-8">
                           <MDBBtn type="submit" color="react">Login</MDBBtn>
