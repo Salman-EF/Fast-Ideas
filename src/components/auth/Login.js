@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import '../../App.css';
 // import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css'; 
@@ -11,6 +12,12 @@ class Login extends Component {
     email: '',
     password: '',
     loginFailed: ''
+  }
+  componentDidMount = () => {
+    let token = localStorage.getItem('ACCESS_TOKEN')
+    if(token) {
+      this.props.history.push('/')
+    }
   }
 
   changeHandler = (e) => {
@@ -81,4 +88,4 @@ class Login extends Component {
   }
 }
   
-export default Login;
+export default withRouter(Login);
