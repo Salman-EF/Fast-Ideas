@@ -43,11 +43,12 @@ class UpdateIdea extends Component {
     }
     submitHandler = (e) => {
         e.preventDefault()
-        let ideaChanged = this.state.ideaChanged, ideaUpdated = this.state.idea, origin = this
+        let ideaChanged = this.state.ideaChanged
         if (ideaChanged==='') {
+            let token = localStorage.getItem('ACCESS_TOKEN'), ideaUpdated = this.state.idea, origin = this
             fetch('http://localhost:8080/ideas/'+ideaUpdated.id,{
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Authorization": token,"Content-Type": "application/json" },
                 body: JSON.stringify(ideaUpdated)
             }).then(response => response.json())
             .then(function(data){
@@ -83,7 +84,7 @@ class UpdateIdea extends Component {
                     </div>
                     ) : (
                     <form onSubmit={this.submitHandler}>
-                        <div className="md-form">
+                        <div className="m-2 p-4">
                             <MDBInput id="title" hint="Idea title" className="text-center"
                                     onChange={this.changeHandler} value={this.state.idea.title} />
                             <MDBInput id="content" type="textarea" rows="5" hint="So What's your Crazy Idea..." className="mb-0"

@@ -39,15 +39,17 @@ class Ideas extends Component {
         return dateFormat
     }
     deleteIdea(id) {
-        fetch("http://localhost:8080/ideas/"+id, {
-            method: "DELETE"
+        let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
+        fetch('http://localhost:8080/ideas/'+id,{
+            method: "DELETE",
+            headers: { "Authorization": token }
         }).then(response => response.json())
         .then( data => {
             if(data) {
-                let listUpdated = this.state.ideas.filter(idea => {
+                let listUpdated = origin.state.ideas.filter(idea => {
                     return idea.id !== id
                 })
-                this.props.refreshIdeas(listUpdated)
+                origin.props.refreshIdeas(listUpdated)
             }
         })
     }

@@ -8,16 +8,33 @@ import Ideas from './crazyIdeas/Ideas';
 import AddIdea from './crazyIdeas/AddIdea';
 
 class Home extends Component {
-  state = {
-    ideas : [],
-    isLoading : false
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      ideas : [],
+      isLoading : false
+    };
+  }
   componentDidMount = () => {
     this.setState({isLoading: true});
-  
-    fetch('http://localhost:8080/ideas')
-      .then(response => response.json())
-      .then(data => this.setState({ideas: data, isLoading: false}));
+    let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
+    fetch('http://localhost:8080/ideas',{
+      method: "GET",
+      headers: { "Authorization": token }
+    }).then(response => response.json())
+      .then(data => {
+        origin.setState({ideas: data, isLoading: false})});
+  }
+  componentDidUpdate = (nextProps) => {
+      if(this.props.isAuthenticated!==nextProps.isAuthenticated) {
+        this.setState({isLoading: true})
+        let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
+        fetch('http://localhost:8080/ideas',{
+          method: "GET",
+          headers: { "Authorization": token }
+        }).then(response => response.json())
+          .then(data => origin.setState({ideas: data, isLoading: false}));
+      }
   }
   refreshIdeas = (ideas) => {
     this.setState({ideas})

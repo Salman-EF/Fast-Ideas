@@ -33,12 +33,13 @@ class AddIdea extends Component {
     }
     addIdea = (idea) => {
       idea.created_at = new Date();
+      let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
       fetch('http://localhost:8080/ideas',{
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Authorization": token,"Content-Type": "application/json" },
         body: JSON.stringify(idea)
       }).then(response => response.json())
-        .then(data =>  this.props.refreshIdeas([...this.props.ideas, data]))
+        .then(data =>  origin.props.refreshIdeas([...origin.props.ideas, data]))
         
       return idea
     }
