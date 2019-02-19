@@ -5,6 +5,7 @@ import '../../App.css';
 import 'bootstrap-css-only/css/bootstrap.min.css'; 
 import 'mdbreact/dist/css/mdb.css';
 import { MDBInput,MDBBtn } from "mdbreact";
+import authServices from './authServices'
 
 class Login extends Component {
 
@@ -31,7 +32,7 @@ class Login extends Component {
   }
   submitHandler = (e) => {
       e.preventDefault()
-      let email = this.state.email, password = this.state.password
+      let email = this.state.email, password = this.state.password, origin=this
       if(this.validateEmail(email) && password) {
         var thinker = {email:email,password:password}
         fetch("http://localhost:8080/login",{
@@ -42,10 +43,10 @@ class Login extends Component {
           .then(data => {
             if(data) {
               localStorage.setItem('ACCESS_TOKEN', data)
-              this.props.loginHandler()
-              this.setState({ loginFailed : '' });
+              origin.props.loginHandler()
+              authServices.login()
             } else {
-              this.setState({ loginFailed : 'Your Email or Password is incorrect. Please try again!' });
+              origin.setState({ loginFailed : 'Your Email or Password is incorrect. Please try again!' });
             }
         })
       }
@@ -82,7 +83,7 @@ class Login extends Component {
   }
 
   validateEmail(email) {
-    let EMAIL_FORMAT = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let EMAIL_FORMAT = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if(email.match(EMAIL_FORMAT)) return true
     return false
   }
