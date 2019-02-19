@@ -12,6 +12,7 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
+    processing: false,
     loginFailed: ''
   }
   componentDidMount = () => {
@@ -34,6 +35,7 @@ class Login extends Component {
       e.preventDefault()
       let email = this.state.email, password = this.state.password, origin=this
       if(this.validateEmail(email) && password) {
+        this.setState({ processing:true })
         var thinker = {email:email,password:password}
         fetch("http://localhost:8080/login",{
           method: "POST",
@@ -41,6 +43,7 @@ class Login extends Component {
           body: JSON.stringify(thinker)
         }).then(response => response.text())
           .then(data => {
+            origin.setState({ processing:false })
             if(data) {
               localStorage.setItem('ACCESS_TOKEN', data)
               origin.props.loginHandler()
@@ -61,17 +64,23 @@ class Login extends Component {
                   {/* Email */}
                   <div className="md-form mb-5">
                     <MDBInput id="email" name="email" hint="Your Email" className={this.state.invalidEmail +' text-center'} 
-                              onChange={this.changeHandler} value={this.state.email} />
+                              onChange={this.changeHandler} value={this.state.email} required />
                   </div>
                   {/* Pass */}
                   <div className="md-form mb-5">
                     <MDBInput id="password" name="password" type="password" hint="Password" className="text-center"
-                              onChange={this.changeHandler} value={this.state.password} />
+                              onChange={this.changeHandler} value={this.state.password} required />
                   </div>
                   <p className="red-text text-center">{this.state.loginFailed}</p>
                   <div className="form-group row justify-content-center">
                       <div className="col-md-8">
-                          <MDBBtn type="submit" color="react">Login</MDBBtn>
+                        {
+                          this.state.processing ? (
+                            <MDBBtn className="disabled" color="react">Submiting</MDBBtn>
+                          ) : (
+                            <MDBBtn type="submit" color="react">Login</MDBBtn>
+                          )
+                        }
                       </div>
                   </div>
                 </div>
