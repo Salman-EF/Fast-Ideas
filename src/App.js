@@ -3,8 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 
 import { Route,withRouter } from 'react-router-dom';
-import Login from './components/auth/Login';
 import Home from './components/Home';
+// import Login from './components/auth/Login';
+// import Signup from './components/auth/Signup';
 
 class App extends Component {
   constructor(props) {
@@ -16,34 +17,9 @@ class App extends Component {
     }
   }
 
-  loadCurrentUser = () => {
-    let token = localStorage.getItem('ACCESS_TOKEN')
-    if(!token) {
-      this.props.history.push("/login")
-    } else {
-      let origin = this;
-      fetch("http://localhost:8080/thinkers/me",{
-        method: "GET",
-        headers: { "Authorization": token }
-      }).then(response => response.json())
-        .then(data => {
-        origin.setState({
-            currentUser:data,
-            isAuthenticated: true,
-            isLoading: false
-        })
-        this.props.history.push("/")
-      })
-    }
-  }
-
-  componentDidMount() {
-    this.loadCurrentUser();
-  }
-
   loginHandler = () => {
     this.setState({ isLoading: true });
-    this.loadCurrentUser();
+    this.props.history.push("/")
   }
 
   render() {
@@ -58,9 +34,9 @@ class App extends Component {
             ) : (
               <main className="App-main">
                 <Route exact path="/" component={Home} isAuthenticated={this.state.isAuthenticated}
-                      currentUser={this.state.currentUser} /*handleLogout={this.handleLogout} {...props}*/ />
-                <Route path="/login"  component={Login} loginHandler={this.loginHandler} />
-                {/* <Route path="/signup" component={Signup}></Route> */}
+                      currentUser={this.state.currentUser} handleLogout={this.handleLogout} />
+                {/* <Route path="/login"  component={Login} loginHandler={this.loginHandler} />
+                <Route path="/signup"  component={Signup} loginHandler={this.loginHandler} /> */}
               </main>
             )
           }

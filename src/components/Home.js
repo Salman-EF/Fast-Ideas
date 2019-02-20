@@ -17,24 +17,22 @@ class Home extends Component {
   }
   componentDidMount = () => {
     this.setState({isLoading: true});
-    let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
+    let origin = this
     fetch('http://localhost:8080/ideas',{
-      method: "GET",
-      headers: { "Authorization": token }
+      method: "GET"
     }).then(response => response.json())
       .then(data => {
         origin.setState({ideas: data, isLoading: false})});
   }
-  componentDidUpdate = (nextProps) => {
-      if(this.props.isAuthenticated!==nextProps.isAuthenticated) {
-        this.setState({isLoading: true})
-        let token = localStorage.getItem('ACCESS_TOKEN'), origin = this
-        fetch('http://localhost:8080/ideas',{
-          method: "GET",
-          headers: { "Authorization": token }
-        }).then(response => response.json())
-          .then(data => origin.setState({ideas: data, isLoading: false}));
-      }
+  componentDidUpdate = (prevProps) => {
+    if(this.props !== prevProps) {
+      this.setState({isLoading: true})
+      let origin = this
+      fetch('http://localhost:8080/ideas',{
+        method: "GET"
+      }).then(response => response.json())
+        .then(data => origin.setState({ideas: data, isLoading: false}));
+    }
   }
   refreshIdeas = (ideas) => {
     this.setState({ideas})
